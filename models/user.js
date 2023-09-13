@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
 // const Address = require('./address');
 
 // Define the user schema
@@ -35,6 +37,9 @@ const userSchema = new mongoose.Schema({
     ref: 'Address',
   },
 });
+
+//Add passport-local mongoose to the user schema
+userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
