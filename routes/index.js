@@ -10,8 +10,10 @@ const paymentRoute = require('./paymentRoute');
 const reviewRoute = require('./reviewRoute');
 const imageRoute = require('./imageRoute');
 const categoryRoute = require('./categoryRoute');
+const adminRoute = require('./adminRoute');
 
 router.use('/users', userRoute);
+router.use('/admin', adminRoute);
 router.use('/products', productRoute);
 router.use('/orders', orderRoute);
 router.use('/wishlist', wishlistRoute);
