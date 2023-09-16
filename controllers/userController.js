@@ -2,7 +2,8 @@ import express from 'express';
 import User from '../models/user';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
-import Address from '../models/address';
+import address from '../models/address';
+import order from '../models/order';
 
 /* Ensure middleware for session managemnt is defined in server.js
    Because logging out from a session based authentication just requires me to destroy the session
