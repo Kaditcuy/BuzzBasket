@@ -6,7 +6,7 @@ const paymentTypes = ['Credit Card', 'PayPal', 'Bank Transfer', 'Other'];
 // Define PaymentMethods Schema, using a payment Centric Approach
 const paymentMethodSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObectId, // defining userId as a unique id
+    type: mongoose.Schema.Types.ObjectId, // defining userId as a unique id
     ref: 'User', // Reference the user model
     required: true,
   },

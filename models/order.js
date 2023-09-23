@@ -11,6 +11,14 @@ const orderSchema = new mongoose.Schema({
     required: true,
 
   },
+  isClosed: {
+    type: Boolean,
+    default: false,
+  },
+  cancelled: {
+    type: Boolean,
+    default: false,
+  },
   products: [
     {
       product: {
