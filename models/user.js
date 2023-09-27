@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
-const { v4: uuidv4 } = require('uuid');
+//const { v4: uuidv4 } = require('uuid');
 // const Address = require('./address');
 
 // Define the user schema
@@ -11,12 +11,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true, // Ensures each username is unique
   },
-  userId: {
-    type: String,
-    unique: true,
-    required: false,
-    default: uuidv4(),
-  },
+  // userId: {
+  //   type: String,
+  //   unique: true,
+  //   required: false,
+  //   default: uuidv4(),
+  // },
   email: {
     type: String,
     required: true,
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  address: [
+  addresses: [
 	{
     type: mongoose.Schema.Types.ObjectID, // also means type will be a unique id
     ref: 'Address',

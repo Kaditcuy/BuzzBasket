@@ -204,7 +204,7 @@ exports.getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await User.findOne(userId);
+    const user = await User.findOne({ _id: userId });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -239,7 +239,7 @@ exports.updateUserProfile = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    return res.json(user);
+    return res.json({ message: 'Profile updated successfully', user: user });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Internal Server Error' });
@@ -257,16 +257,35 @@ exports.changeUserPassword = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    return res.json(user);
+    return res.json({ message: 'Password updated successfully', user });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Internal Server error' });
   }
 };
+exports.getUserAddresses = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).populate('addresses');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Extract user's addresses from the populated field
+    const userAddresses = user.addresses;
+
+    return res.json(userAddresses);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 exports.getUserAddress = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId, addressIndex } = req.params;
 
     const user = await User.findById(userId);
 
@@ -274,13 +293,16 @@ exports.getUserAddress = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    if (addressIndex < 0 || addressIndex >= user.addresses.length) {
+       return res.status(404).json({ message: 'Address not found' })
+    }
     // Extraxt user's address data
     const userAddress = {
-      street: user.address.street,
-      city: user.address.city,
-      state: user.address.state,
-      postalcode: user.address.postalcode,
-      country: user.address.country,
+      street: user.addresses[addressIndex].street,
+      city: user.addresses[addressIndex].city,
+      state: user.addresses[addressIndex].state,
+      postalcode: user.addresses[addressIndex].postalcode,
+      country: user.addresses[addressIndex].country,
     };
 
     return res.json(userAddress);

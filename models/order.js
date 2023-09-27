@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: false,
 
   },
   isClosed: {
@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
       product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
-        required: true,
+        required: false,
       },
       quantity: {
         type: Number,
@@ -46,18 +46,18 @@ const orderSchema = new mongoose.Schema({
 	   address: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Address',
-      required: true,
+      required: false,
     },
 	    method: {
       type: String,
-      required: true,
-      enum: ['Standard', 'Express', 'Next-Day', 'Others'],
+      required: false,
+      enum: ['Standard', 'Express', 'DHL', 'Others'],
     },
   },
   payment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'paymentMethod',
-    required: true,
+    required: false,
   },
 
 });

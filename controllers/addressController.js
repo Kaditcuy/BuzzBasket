@@ -3,12 +3,21 @@ const User = require('../models/user');
 
 exports.createAddress = async (req, res) => {
   try {
+    const { userId } = req.params;
     // Get address details from the request body
-    const { userId, street, city, state, postalCode, country } = req.body;
+    const { street, city, state, postalCode, country } = req.body;
 
+    const user = await User.findById(userId);
+
+    if(!user) {
+      res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!user.addresses) {
+      user.addresses = [];
+    }
     // Create a new address instance
     const newAddress = new Address({
-      userId, // Reference to the user to whom this address belongs
       street,
       city,
       state,
@@ -16,30 +25,36 @@ exports.createAddress = async (req, res) => {
       country,
     });
 
-    // Save the new address to the database
-    const savedAddress = await newAddress.save();
+    await newAddress.save();
 
-    res.status(201).json(savedAddress);
+    // Push the new address document's ID to the user's addresses array
+     user.addresses.push(newAddress._id);
+     console.log('User Addresses', user.addresses);
+
+    // Save the user document with new address to the database
+    await user.save();
+
+    res.status(201).json({ message: 'Address created successfully', address: newAddress });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-exports.getUserAddresses = async (req, res) => {
-    try {
-      // Get the user's ID from the route parameters
-      const { userId } = req.params;
+// exports.getUserAddresses = async (req, res) => {
+//     try {
+//       // Get the user's ID from the route parameters
+//       const { userId } = req.params;
   
-      // Find all addresses associated with the user ID
-      const userAddresses = await Address.find({ userId });
+//       // Find all addresses associated with the user ID
+//       const userAddresses = await Address.find({ userId });
   
-      res.status(200).json(userAddresses);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
+//       res.status(200).json(userAddresses);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//   };
 
   exports.getAddressById = async (req, res) => {
     try {

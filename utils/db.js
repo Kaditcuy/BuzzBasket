@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Define the MongoDb connection URI using environmental variables
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/buzzbasket-databse';
+const mongoURI = 'mongodb+srv://admin:admin123@buzzbasketapi.y4quf0f.mongodb.net/BuzzbasketDB?retryWrites=true&w=majority';
 // Create a Mongoose instance and connect to the database
 mongoose.set('debug', true);
 

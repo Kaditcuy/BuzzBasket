@@ -9,6 +9,7 @@ const addressController = require('../controllers/addressController');
 const shippingController = require('../controllers/shippingController');
 //const imageController = require('../controllers/imageController');
 const categoryController = require('../controllers/categoryController');
+const cartController = require('../controllers/cartController');
 const router = express.Router();
 const authenticate = require('../middleware/authenticate');
 
@@ -27,14 +28,15 @@ router.post('/api/users/forgot-password', userController.forgotPassword);
 router.post('/api/users/reset-password', userController.resetUserPassword);
 
 /*------------------- User Profile Management --------------------*/
-router.get('/api/users/me', userController.getUserProfile);
+router.get('/api/users/:userId', userController.getUserProfile);
 router.put('/api/users/:userId', userController.updateUserProfile);
 router.put('/api/users/:userId', userController.changeUserPassword);
 
 
 /* -------------------- User Address Management ----------------- */
-router.get('/api/users/:userId/addresses', userController.getUserAddress);
-router.post('/api/users/:userId/addresses', userController.addNewAddress);
+router.get('/api/users/:userId/addresses', userController.getUserAddresses);
+router.get('/api/users/:userId/addresses/:addressIndex', userController.getUserAddress);
+router.put('/api/users/:userId/addresses', userController.addNewAddress);
 router.put('/api/users/:userId/addresses/:addressId', userController.editUserAddress);
 router.delete('/api/users/:userId/adresses/:addressId', userController.deleteUserAddress);
 
@@ -138,8 +140,8 @@ router.get('/api/products/:productId/images/primary', imageController.getProduct
 */
 
 /* -------------------- Address Management -------------------- */
-router.post('/api/addresses', addressController.createAddress);
-router.get('/api/users/:userId/addresses', addressController.getUserAddresses);
+router.post('/api/users/:userId/addresses', addressController.createAddress);
+//router.get('/api/users/:userId/addresses', addressController.getUserAddresses);
 router.get('/api/addresses/:addressId', addressController.getAddressById);
 router.put('api/addresses/:addressId', addressController.updateAddress);
 router.delete('/api/addresses/:addressId', addressController.deleteAddress);
@@ -160,5 +162,8 @@ router.get('/api/categories', categoryController.getAllCategories);
 router.get('/api/categories/:categoryId', categoryController.getCategoryById);
 router.put('/api/categories/:categoryId', categoryController.updateCategory);
 router.delete('/api/categories/:categoryId', categoryController.deleteCategory);
+
+/* --------------------- Cart Management ----------------------- */
+router.post('/api/cart/:userId/add', cartController.addToCart);
 
 module.exports = router;
